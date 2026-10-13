@@ -4,680 +4,571 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hitler's Next Move | OSS Intelligence Challenge</title>
+<title>Hitler's Next Move | OSS Challenge</title>
 <style>
 :root {
   --bg:#101820;
-  --panel:#192630;
-  --panel2:#111b23;
-  --gold:#e3b65d;
-  --paper:#eee9dc;
-  --muted:#b8c1c4;
+  --panel:#1a2832;
+  --gold:#e4bd69;
+  --text:#eee9dc;
+  --muted:#b8c1c5;
   --line:#40515b;
-  --red:#b7463d;
-  --green:#85c49c;
+  --green:#8dc5a1;
 }
 * { box-sizing:border-box; }
 body {
   margin:0;
   background:var(--bg);
-  color:var(--paper);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.5;
+  color:var(--text);
+  font:16px/1.5 Arial,Helvetica,sans-serif;
 }
 header {
-  padding:24px 5%;
+  padding:24px;
+  text-align:center;
   background:#080d12;
   border-bottom:3px solid var(--gold);
 }
+h1 {
+  font: bold clamp(2rem,5vw,3.5rem) Georgia,serif;
+  margin:4px 0;
+}
+h2 { color:var(--gold); }
+h3 { margin:8px 0; }
 .kicker {
   color:var(--gold);
-  font-size:.78rem;
-  font-weight:bold;
   letter-spacing:3px;
+  font-weight:bold;
+  font-size:.8rem;
 }
-h1 {
-  font-family:Georgia,serif;
-  font-size:clamp(2rem,5vw,3.6rem);
-  margin:7px 0;
-}
-h2 { color:var(--gold); margin-top:8px; }
-h3 { margin:8px 0; }
-p { margin:9px 0; }
 main { max-width:1400px; margin:auto; padding:20px; }
 .panel {
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:9px;
-  padding:22px;
+  padding:20px;
   margin-bottom:20px;
 }
 .stamp {
   display:inline-block;
-  border:1px solid var(--gold);
   color:var(--gold);
+  border:1px solid var(--gold);
   padding:4px 9px;
-  font-size:.74rem;
+  font-size:.75rem;
   font-weight:bold;
   letter-spacing:1.5px;
 }
 .muted { color:var(--muted); }
 .small { font-size:.86rem; }
+.map {
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:5px;
+  border:1px solid var(--line);
+}
+.notice {
+  padding:14px;
+  background:#111b23;
+  border-left:4px solid var(--gold);
+  margin:15px 0;
+}
 .grid {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:18px;
 }
-.notice {
-  background:var(--panel2);
-  border-left:4px solid var(--gold);
-  padding:13px 15px;
-  margin:14px 0;
-}
-.map-image {
-  display:block;
-  width:100%;
-  height:auto;
-  border-radius:5px;
-  border:1px solid #6c7472;
-  background:#d8d4c5;
-}
-.map-fallback {
-  display:none;
-  padding:25px;
-  background:#202c33;
-  border:1px dashed var(--gold);
-}
-button {
-  border:0;
-  border-radius:5px;
-  background:var(--gold);
-  color:#15191c;
-  padding:12px 18px;
-  font-size:1rem;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover { filter:brightness(1.08); }
-button:disabled { opacity:.45; cursor:not-allowed; }
-.secondary {
-  color:var(--paper);
-  background:transparent;
-  border:1px solid var(--line);
-}
-.cards {
+.targets {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
+  gap:10px;
 }
 .target {
-  text-align:left;
-  padding:15px;
-  min-height:135px;
-  color:var(--paper);
-  background:var(--panel2);
+  color:var(--text);
+  background:#101820;
   border:1px solid var(--line);
   border-radius:7px;
+  text-align:left;
+  padding:13px;
   cursor:pointer;
+  min-height:125px;
 }
 .target:hover { border-color:var(--gold); }
 .target.selected {
-  background:#302e24;
   border:2px solid var(--gold);
+  background:#343126;
 }
-.target .region {
+.target:disabled { opacity:1; }
+.region {
   color:var(--gold);
   font-size:.72rem;
-  font-weight:bold;
   text-transform:uppercase;
-}
-.target .target-name {
-  font-size:1.04rem;
-  font-weight:bold;
-  margin:8px 0;
-}
-.target .description {
-  color:var(--muted);
-  font-size:.83rem;
-  font-weight:normal;
-}
-.target .check {
-  color:var(--gold);
-  font-size:.74rem;
-  margin-top:10px;
   font-weight:bold;
 }
+.target-name { font-weight:bold; margin:8px 0; }
+.target-description { color:var(--muted); font-size:.83rem; }
+.check { color:var(--gold); font-size:.75rem; margin-top:8px; }
 .option {
   display:flex;
-  align-items:flex-start;
   gap:10px;
   padding:12px;
-  margin:8px 0;
   border:1px solid var(--line);
-  background:var(--panel2);
+  background:#111b23;
   border-radius:6px;
+  margin:8px 0;
   cursor:pointer;
 }
 .option:has(input:checked) { border-color:var(--gold); }
-input[type=radio] {
-  accent-color:var(--gold);
-  margin-top:5px;
-}
+input[type=radio] { accent-color:var(--gold); margin-top:5px; }
 textarea {
   width:100%;
-  min-height:130px;
+  min-height:125px;
   resize:vertical;
-  border:1px solid var(--line);
-  background:#0f171d;
-  color:white;
-  border-radius:6px;
-  padding:13px;
+  padding:12px;
   font:inherit;
+  color:white;
+  background:#101820;
+  border:1px solid var(--line);
+  border-radius:6px;
 }
-hr { border:0; border-top:1px solid var(--line); margin:20px 0; }
+button.action {
+  background:var(--gold);
+  color:#111820;
+  border:0;
+  border-radius:5px;
+  padding:12px 18px;
+  font-weight:bold;
+  font-size:1rem;
+  cursor:pointer;
+}
+button.action:disabled { opacity:.5; cursor:not-allowed; }
+button.secondary {
+  color:var(--text);
+  background:transparent;
+  border:1px solid var(--line);
+  padding:10px 15px;
+  border-radius:5px;
+  cursor:pointer;
+}
+.hidden { display:none !important; }
+.result {
+  padding:15px;
+  background:#111b23;
+  border-left:4px solid var(--green);
+  margin:12px 0;
+}
 .progress {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:5px;
-  margin:15px 0;
+  margin:18px 0;
 }
 .step {
   text-align:center;
-  padding:9px 5px;
-  background:#101820;
+  padding:9px 4px;
   border:1px solid var(--line);
   color:var(--muted);
   font-size:.78rem;
-  font-weight:bold;
 }
-.step.active {
-  color:#111820;
-  background:var(--gold);
-}
-.result {
-  padding:15px;
-  margin:12px 0;
-  background:var(--panel2);
-  border-left:4px solid var(--green);
-}
-.good { color:var(--green); }
-.bad { color:#f0a79c; }
-.hidden { display:none !important; }
-footer {
-  text-align:center;
-  padding:22px;
-  color:var(--muted);
-  font-size:.82rem;
-}
-@media(max-width:900px) {
-  .cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
-}
-@media(max-width:600px) {
-  main { padding:10px; }
-  .panel { padding:15px; }
+.step.active { background:var(--gold); color:#111820; }
+hr { border:0; border-top:1px solid var(--line); margin:20px 0; }
+footer { text-align:center; color:var(--muted); padding:20px; }
+@media(max-width:850px) {
+  .targets { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .grid { grid-template-columns:1fr; }
-  .cards { grid-template-columns:1fr 1fr; }
-  .progress { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:480px) {
+  main { padding:10px; }
+  .panel { padding:14px; }
+  .progress { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media print {
-  body { background:white; color:black; }
-  header,.panel { background:white; color:black; }
+  body,header,.panel { background:white; color:black; }
   button { display:none; }
 }
 </style>
 </head>
-
 <body>
+
 <header>
   <div class="kicker">AMERICAN INTELLIGENCE TRAINING</div>
   <h1>HITLER'S NEXT MOVE</h1>
-  <p class="muted">OSS Intelligence Challenge | European Theater | September 1939</p>
+  <p class="muted">OSS Intelligence Challenge · September 1939</p>
   <span class="stamp">CLASSIFIED TRAINING FILE 09-39</span>
 </header>
 
 <main>
 
+<!-- THE USER'S BRIEFING IMAGE -->
+<section class="panel">
+  <span class="stamp">INTELLIGENCE MAP AND BRIEFING</span>
+  <h2>Study the Situation in Europe</h2>
+  <img
+    class="map"
+    src="hitler-expansion-map.png"
+    alt="Historical intelligence briefing showing Hitler's expansion across Europe, the timeline, and the map legend"
+  >
+  <p class="small muted">
+    The map shows the broader expansion of Nazi Germany through 1941.
+    For your prediction, use the September 1939 situation as your starting point.
+  </p>
+</section>
+
 <!-- MISSION -->
 <section class="panel">
   <span class="stamp">YOUR MISSION</span>
-  <h2>To the Intelligence Analyst</h2>
-  <p>You are an American intelligence analyst preparing a briefing for President Franklin D. Roosevelt and the senior military leadership.</p>
-  <p>Germany has invaded Poland. Hitler has already expanded German territory, rebuilt his military, and broken international agreements. Britain and France have declared war.</p>
-  <p>Your job is to predict where Hitler will go next and explain WHY he might choose those targets.</p>
+  <h2>To the American Intelligence Analyst</h2>
+  <p>You are preparing a confidential briefing for President Franklin D. Roosevelt and the senior military leadership.</p>
+  <p>Germany has invaded Poland. Hitler has repeatedly expanded German territory, rebuilt his military, and broken international agreements.</p>
+  <p>Your assignment is to predict where Hitler will strike next and explain why.</p>
   <div class="notice">
-    <strong>YOUR ORDERS</strong>
+    <b>YOUR ORDERS</b>
     <ol>
-      <li>Study the historical map and timeline.</li>
+      <li>Study the map and historical timeline.</li>
       <li>Select two to four possible destinations.</li>
-      <li>Identify the main reason for your prediction.</li>
-      <li>Write an evidence-based intelligence assessment.</li>
-      <li>Lock your report before viewing the historical outcome.</li>
+      <li>Identify the most important reason behind your prediction.</li>
+      <li>Write an intelligence assessment using historical evidence.</li>
+      <li>Lock your final report before viewing the historical outcome.</li>
     </ol>
   </div>
-  <p class="small muted">Historical framing: The real Office of Strategic Services was established in 1942. This classroom exercise is set in September 1939 and uses the OSS name for a fictional training scenario.</p>
+  <p class="small muted">
+    Historical note: The actual Office of Strategic Services was established in 1942.
+    This is a fictional intelligence-training exercise set in September 1939.
+  </p>
 </section>
 
-<!-- HISTORICAL MAP -->
+<!-- EVIDENCE -->
 <section class="panel">
-  <span class="stamp">FILE 01 — EUROPEAN SITUATION</span>
-  <h2>Hitler's Territorial Expansion, 1933–1941</h2>
-  <p>Examine the map before making your predictions. Look at Germany's previous expansion, its neighbors, the coastlines, and the possible routes for a future offensive.</p>
-
-  <img
-    class="map-image"
-    src="hitler-expansion-map.png"
-    alt="Historical infographic showing Hitler's territorial expansion in Europe from 1933 to 1941, with a color-coded timeline and invasion arrows"
-    onerror="this.style.display='none';document.getElementById('mapFallback').style.display='block';"
-  >
-
-  <div id="mapFallback" class="map-fallback">
-    <h3>Map image not found</h3>
-    <p>Upload the generated map image to the same GitHub repository as this index.html file.</p>
-    <p>Make sure its exact filename is <code>hitler-expansion-map.png</code>.</p>
-  </div>
-
-  <p class="small muted">Historical reference map: use the 1939 starting situation to make your prediction. The map also displays later events so you can examine the overall expansion pattern after completing the challenge.</p>
-</section>
-
-<!-- TIMELINE -->
-<section class="panel">
-  <span class="stamp">FILE 02 — HISTORICAL EVIDENCE</span>
-  <h2>Timeline: Hitler's Expansion</h2>
+  <span class="stamp">INTELLIGENCE FILES</span>
+  <h2>What Does the Evidence Tell You?</h2>
   <div class="grid">
     <div>
-      <h3>1933–1936: Power and Rearmament</h3>
+      <h3>Territorial Expansion</h3>
       <ul>
-        <li><strong>1933:</strong> Hitler becomes chancellor and begins establishing a dictatorship.</li>
-        <li><strong>1935:</strong> Germany expands its armed forces; the Nuremberg Laws institutionalize antisemitic discrimination.</li>
-        <li><strong>1936:</strong> German troops enter the Rhineland.</li>
+        <li>1936: German troops enter the Rhineland.</li>
+        <li>1938: Germany annexes Austria.</li>
+        <li>1938: Hitler gains the Sudetenland.</li>
+        <li>March 1939: Germany occupies the Czech lands.</li>
+        <li>September 1939: Germany invades Poland.</li>
       </ul>
     </div>
     <div>
-      <h3>1938–1939: Territorial Expansion</h3>
+      <h3>Strategic Questions</h3>
       <ul>
-        <li><strong>March 1938:</strong> Germany annexes Austria.</li>
-        <li><strong>September 1938:</strong> Hitler gains the Sudetenland through the Munich Agreement.</li>
-        <li><strong>March 1939:</strong> Germany occupies the Czech lands.</li>
-        <li><strong>September 1939:</strong> Germany invades Poland.</li>
+        <li>Does Germany need strategic resources?</li>
+        <li>Could control of coastlines help Germany?</li>
+        <li>Which countries could open a route toward France?</li>
+        <li>How might Germany respond to Britain and France declaring war?</li>
       </ul>
     </div>
   </div>
-  <div class="notice">
-    <strong>ANALYST'S QUESTION:</strong> Hitler has repeatedly expanded German power. Which neighboring countries might now be strategically important, and what might he hope to gain?
-  </div>
 </section>
 
-<!-- TARGET SELECTION -->
-<section class="panel" id="selectionPanel">
-  <span class="stamp">PHASE 1 — SELECT TARGETS</span>
+<!-- STUDENT CHALLENGE -->
+<section class="panel" id="challenge">
+  <span class="stamp">PHASE 1 — MAKE YOUR PREDICTION</span>
   <h2>Where Will Hitler Strike Next?</h2>
-  <p>Select two to four destinations you believe Germany may target. Choose based on the evidence available in September 1939—not on what you already know happened later.</p>
 
   <div class="progress">
     <div class="step active" id="step1">1. DESTINATIONS</div>
     <div class="step" id="step2">2. REASONING</div>
-    <div class="step" id="step3">3. FINAL REPORT</div>
+    <div class="step" id="step3">3. REPORT</div>
     <div class="step" id="step4">4. REVEAL</div>
   </div>
 
-  <div class="cards" id="targetCards"></div>
-  <p id="selectionCount" class="muted">0 of 4 destinations selected</p>
+  <p>Select two to four destinations. Your answers will be locked when you submit.</p>
+  <div class="targets" id="targets"></div>
+  <p id="count" class="muted">0 of 4 destinations selected</p>
 
   <hr>
   <h3>Question 1: What is the main reason behind your prediction?</h3>
 
   <label class="option">
     <input type="radio" name="reason" value="resources">
-    <span><strong>Resources and trade routes</strong><br>Germany needs important supplies and access to shipping routes.</span>
+    <span><b>Resources and trade routes</b><br>Germany needs supplies and access to important shipping routes.</span>
   </label>
 
   <label class="option">
     <input type="radio" name="reason" value="military">
-    <span><strong>Military strategy</strong><br>Germany wants better positions, bases, or a route to defeat its enemies.</span>
+    <span><b>Military strategy</b><br>Germany wants better military positions and ways to weaken its enemies.</span>
   </label>
 
   <label class="option">
     <input type="radio" name="reason" value="territory">
-    <span><strong>Territorial expansion</strong><br>Hitler wants to expand German power and control more territory.</span>
+    <span><b>Territorial expansion</b><br>Hitler wants more territory and greater German power.</span>
   </label>
 
   <label class="option">
     <input type="radio" name="reason" value="opportunity">
-    <span><strong>Opportunity</strong><br>Hitler may attack countries he believes cannot stop him.</span>
+    <span><b>Opportunity</b><br>Hitler may attack countries he believes cannot stop him.</span>
   </label>
 
   <hr>
-  <h3>Question 2: Which piece of evidence best supports your prediction?</h3>
+  <h3>Question 2: Which evidence best supports your prediction?</h3>
 
   <label class="option">
     <input type="radio" name="evidence" value="pattern">
-    <span>Hitler has expanded repeatedly after meeting limited effective resistance.</span>
+    <span>Hitler has repeatedly expanded after facing limited resistance.</span>
   </label>
 
   <label class="option">
     <input type="radio" name="evidence" value="geography">
-    <span>Geography, coastlines, and access to resources may influence Germany's next move.</span>
+    <span>Geography, coastlines, and resources may influence Germany's next move.</span>
   </label>
 
   <label class="option">
-    <input type="radio" name="evidence" value="allies">
-    <span>Britain and France have declared war, so Germany must consider how to defeat the Allies.</span>
+    <input type="radio" name="evidence" value="war">
+    <span>Britain and France have declared war, changing Germany's strategic situation.</span>
   </label>
 
   <label class="option">
     <input type="radio" name="evidence" value="uncertainty">
-    <span>Several destinations are possible. Intelligence reports must consider uncertainty.</span>
+    <span>Several destinations are possible, so intelligence must account for uncertainty.</span>
   </label>
 
   <hr>
-  <h3>Question 3: Write Your Intelligence Assessment</h3>
-  <p>Explain which destination you think is MOST likely and why. Use at least one piece of evidence from the map or timeline.</p>
-  <textarea id="assessment" maxlength="1200" placeholder="My main prediction is... I believe Hitler will target this destination because... The evidence supporting my prediction is..."></textarea>
-  <p class="small muted" id="charCount">0 / 1200 characters</p>
+  <h3>Question 3: Your Intelligence Assessment</h3>
+  <p>Explain which destination you believe is most likely and why. Use evidence from the map or timeline.</p>
+  <textarea id="assessment" maxlength="1200" placeholder="My main prediction is... I believe Hitler will target this destination because... The evidence that supports my prediction is..."></textarea>
+  <p class="small muted" id="characters">0 / 1200 characters</p>
 
-  <button id="lockButton" onclick="lockReport()">LOCK FINAL REPORT</button>
-  <p id="error" class="bad" role="status"></p>
-  <p class="small muted">Once locked, your answers cannot be changed. The historical reveal will then become available.</p>
+  <button class="action" id="lock" onclick="lockReport()">LOCK FINAL REPORT</button>
+  <p id="error" role="status" style="color:#f0a79c"></p>
+  <p class="small muted">Once locked, you cannot change your answers before the reveal.</p>
 </section>
 
-<!-- HISTORICAL REVEAL -->
-<section class="panel hidden" id="revealPanel">
+<!-- REVEAL -->
+<section class="panel hidden" id="reveal">
   <span class="stamp">PHASE 2 — HISTORICAL REVEAL</span>
-  <h2>Report Locked: What Happened Next?</h2>
-  <p id="lockedReport"></p>
+  <h2>Your Report Is Locked</h2>
+  <div class="result" id="report"></div>
 
-  <div class="result">
-    <h3>April 9, 1940 — Denmark and Norway</h3>
-    <p>Germany invaded both countries. Denmark surrendered quickly; Norway resisted for longer. Germany wanted to protect its strategic position in Scandinavia, including iron-ore shipments from Sweden and access to Norwegian coastal bases.</p>
-  </div>
+  <h3>April 9, 1940 — Denmark and Norway</h3>
+  <p>Germany invaded Denmark and Norway. Denmark surrendered quickly, while Norway resisted longer. Germany sought to protect its strategic position in Scandinavia, including iron-ore shipments from Sweden and access to Norwegian coastal bases.</p>
 
-  <div class="result">
-    <h3>May 10, 1940 — Western Europe</h3>
-    <p>Germany attacked the Netherlands, Belgium, Luxembourg, and France. German forces advanced through the Low Countries and the Ardennes, helping defeat France and drive British forces toward evacuation from Dunkirk.</p>
-  </div>
+  <h3>May 10, 1940 — Western Europe</h3>
+  <p>Germany attacked the Netherlands, Belgium, Luxembourg, and France. German forces advanced through the Low Countries and the Ardennes, helping defeat France.</p>
 
-  <div class="result">
-    <h3>April 1941 — Yugoslavia and Greece</h3>
-    <p>Germany and its allies invaded Yugoslavia and Greece during the Balkan campaign.</p>
-  </div>
+  <h3>April 1941 — The Balkans</h3>
+  <p>Germany and its allies invaded Yugoslavia and Greece.</p>
 
-  <div class="result">
-    <h3>June 22, 1941 — Operation Barbarossa</h3>
-    <p>Germany launched a massive invasion of the Soviet Union. The invasion opened a major eastern front and became a central part of the European war.</p>
-  </div>
+  <h3>June 22, 1941 — Operation Barbarossa</h3>
+  <p>Germany launched a massive invasion of the Soviet Union, opening a major eastern front.</p>
 
+  <hr>
   <h3>Compare Your Predictions with History</h3>
-  <p class="muted">The destinations below are compared against the major German invasions described in this briefing. This is a comparison of outcomes, not a score of your analytical ability.</p>
+  <p class="muted">This comparison checks your chosen destinations against the major invasions described in this challenge. It is not a grade of your reasoning.</p>
   <div id="comparison"></div>
 
-  <h3>Your Original Intelligence Assessment</h3>
-  <div class="result" id="originalAssessment"></div>
+  <h3>Your Original Assessment</h3>
+  <div class="result" id="original"></div>
 
   <div class="notice">
-    <strong>AFTER-ACTION QUESTION</strong>
-    <p>Which mattered most in Hitler's expansion: access to resources, military strategy, territorial ambition, or the belief that other countries would not stop him? Use a specific historical example to support your conclusion.</p>
+    <b>AFTER-ACTION QUESTION</b>
+    <p>Which factor mattered most in Hitler's expansion: resources, military strategy, territorial ambition, or the belief that other countries would not stop him? Use a historical example to support your answer.</p>
   </div>
 
-  <button onclick="window.print()">PRINT REPORT</button>
+  <button class="action" onclick="window.print()">PRINT REPORT</button>
   <button class="secondary" onclick="location.reload()">RESTART CHALLENGE</button>
 </section>
 
 </main>
 
-<footer>
-  HISTORICAL INTELLIGENCE TRAINING · EUROPE, 1939–1941
-</footer>
+<footer>HISTORICAL INTELLIGENCE TRAINING · EUROPE, 1939–1941</footer>
 
 <script>
 const destinations = [
   {
-    id:"denmark",
-    name:"Denmark",
-    region:"Scandinavia",
-    description:"Controls access between the Baltic Sea and the North Sea.",
-    invaded:true,
-    when:"April 9, 1940"
+    id:"denmark", name:"Denmark", region:"Scandinavia",
+    desc:"Controls access between the Baltic Sea and North Sea.",
+    invaded:true, date:"April 9, 1940"
   },
   {
-    id:"norway",
-    name:"Norway",
-    region:"Scandinavia",
-    description:"A long coastline with Atlantic access and important shipping routes.",
-    invaded:true,
-    when:"April 9, 1940"
+    id:"norway", name:"Norway", region:"Scandinavia",
+    desc:"Long coastline, Atlantic access, and shipping routes.",
+    invaded:true, date:"April 9, 1940"
   },
   {
-    id:"netherlands",
-    name:"The Netherlands",
-    region:"Western Europe",
-    description:"Borders Germany and has access to the North Sea.",
-    invaded:true,
-    when:"May 10, 1940"
+    id:"netherlands", name:"The Netherlands", region:"Western Europe",
+    desc:"Borders Germany and has access to the North Sea.",
+    invaded:true, date:"May 10, 1940"
   },
   {
-    id:"belgium",
-    name:"Belgium",
-    region:"Western Europe",
-    description:"Borders France and Germany and could provide a route west.",
-    invaded:true,
-    when:"May 10, 1940"
+    id:"belgium", name:"Belgium", region:"Western Europe",
+    desc:"Borders Germany and France; a possible route west.",
+    invaded:true, date:"May 10, 1940"
   },
   {
-    id:"france",
-    name:"France",
-    region:"Western Europe",
-    description:"A major Allied power already at war with Germany.",
-    invaded:true,
-    when:"May 10, 1940"
+    id:"france", name:"France", region:"Western Europe",
+    desc:"A major Allied power already at war with Germany.",
+    invaded:true, date:"May 10, 1940"
   },
   {
-    id:"britain",
-    name:"Great Britain",
-    region:"Western Europe",
-    description:"A major enemy protected by the English Channel and Royal Navy.",
-    invaded:false,
-    when:"No successful German invasion"
+    id:"britain", name:"Great Britain", region:"Western Europe",
+    desc:"A major enemy protected by the English Channel and Royal Navy.",
+    invaded:false, date:"No successful German invasion"
   },
   {
-    id:"soviet",
-    name:"The Soviet Union",
-    region:"Eastern Europe",
-    description:"A vast country with major resources and enormous territory.",
-    invaded:true,
-    when:"June 22, 1941"
+    id:"soviet", name:"The Soviet Union", region:"Eastern Europe",
+    desc:"A vast country with important resources and territory.",
+    invaded:true, date:"June 22, 1941"
   },
   {
-    id:"switzerland",
-    name:"Switzerland",
-    region:"Central Europe",
-    description:"A neutral, mountainous country in central Europe.",
-    invaded:false,
-    when:"Not invaded by Germany"
+    id:"switzerland", name:"Switzerland", region:"Central Europe",
+    desc:"A neutral, mountainous country in central Europe.",
+    invaded:false, date:"Not invaded by Germany"
   }
 ];
 
 const selected = new Set();
 let locked = false;
+const targetArea = document.getElementById("targets");
 
-const cards = document.getElementById("targetCards");
-
-destinations.forEach(destination => {
-  const card = document.createElement("button");
-  card.type = "button";
-  card.className = "target";
-  card.setAttribute("aria-pressed", "false");
-  card.dataset.id = destination.id;
-
-  card.innerHTML = `
-    <div class="region">${destination.region}</div>
-    <div class="target-name">${destination.name}</div>
-    <div class="description">${destination.description}</div>
+destinations.forEach(d => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "target";
+  button.setAttribute("aria-pressed","false");
+  button.dataset.id = d.id;
+  button.innerHTML = `
+    <div class="region">${d.region}</div>
+    <div class="target-name">${d.name}</div>
+    <div class="target-description">${d.desc}</div>
     <div class="check">CLICK TO SELECT</div>
   `;
 
-  card.addEventListener("click", () => {
+  button.addEventListener("click", () => {
     if (locked) return;
-
     document.getElementById("error").textContent = "";
 
-    if (selected.has(destination.id)) {
-      selected.delete(destination.id);
+    if (selected.has(d.id)) {
+      selected.delete(d.id);
     } else {
       if (selected.size >= 4) {
         document.getElementById("error").textContent =
           "Choose no more than four destinations.";
         return;
       }
-      selected.add(destination.id);
+      selected.add(d.id);
     }
-
-    updateCards();
+    updateTargets();
   });
 
-  cards.appendChild(card);
+  targetArea.appendChild(button);
 });
 
-function updateCards() {
-  document.querySelectorAll(".target").forEach(card => {
-    const isSelected = selected.has(card.dataset.id);
-
-    card.classList.toggle("selected", isSelected);
-    card.setAttribute("aria-pressed", String(isSelected));
-    card.querySelector(".check").textContent =
-      isSelected ? "✓ DESTINATION SELECTED" : "CLICK TO SELECT";
+function updateTargets() {
+  document.querySelectorAll(".target").forEach(button => {
+    const yes = selected.has(button.dataset.id);
+    button.classList.toggle("selected",yes);
+    button.setAttribute("aria-pressed",String(yes));
+    button.querySelector(".check").textContent =
+      yes ? "✓ DESTINATION SELECTED" : "CLICK TO SELECT";
   });
 
-  document.getElementById("selectionCount").textContent =
+  document.getElementById("count").textContent =
     `${selected.size} of 4 destinations selected`;
 }
 
 document.getElementById("assessment").addEventListener("input", event => {
-  document.getElementById("charCount").textContent =
+  document.getElementById("characters").textContent =
     `${event.target.value.length} / 1200 characters`;
 });
 
-function selectedRadio(name) {
-  return document.querySelector(`input[name="${name}"]:checked`);
+function radioValue(name) {
+  const input = document.querySelector(`input[name="${name}"]:checked`);
+  return input ? input.value : "";
 }
 
-function reasonLabel(value) {
-  const labels = {
-    resources: "Resources and trade routes",
-    military: "Military strategy",
-    territory: "Territorial expansion",
-    opportunity: "Opportunity and limited resistance"
-  };
-  return labels[value] || value;
-}
+const reasonNames = {
+  resources:"Resources and trade routes",
+  military:"Military strategy",
+  territory:"Territorial expansion",
+  opportunity:"Opportunity and limited resistance"
+};
 
-function evidenceLabel(value) {
-  const labels = {
-    pattern: "Hitler's repeated expansion",
-    geography: "Geography and coastlines",
-    allies: "Britain and France at war",
-    uncertainty: "Uncertainty and competing possibilities"
-  };
-  return labels[value] || value;
-}
+const evidenceNames = {
+  pattern:"Hitler's repeated expansion",
+  geography:"Geography and coastlines",
+  war:"Britain and France at war",
+  uncertainty:"Uncertainty and competing possibilities"
+};
 
 function lockReport() {
   if (locked) return;
 
   const error = document.getElementById("error");
-  const reason = selectedRadio("reason");
-  const evidence = selectedRadio("evidence");
+  const reason = radioValue("reason");
+  const evidence = radioValue("evidence");
   const assessment = document.getElementById("assessment").value.trim();
 
   if (selected.size < 2) {
     error.textContent = "Select at least two destinations.";
     return;
   }
-
   if (!reason) {
     error.textContent = "Choose the main reason behind your prediction.";
     return;
   }
-
   if (!evidence) {
-    error.textContent = "Choose the evidence that best supports your report.";
+    error.textContent = "Choose the evidence that supports your prediction.";
     return;
   }
-
   if (assessment.length < 30) {
-    error.textContent =
-      "Write at least 30 characters in your intelligence assessment.";
+    error.textContent = "Write at least 30 characters in your assessment.";
     return;
   }
 
   locked = true;
 
-  // Freeze the original student choices before the reveal.
-  document.querySelectorAll(".target").forEach(card => {
-    card.disabled = true;
+  document.querySelectorAll(".target").forEach(button => {
+    button.disabled = true;
   });
-
   document.querySelectorAll('input[type="radio"]').forEach(input => {
     input.disabled = true;
   });
-
   document.getElementById("assessment").readOnly = true;
-  document.getElementById("lockButton").disabled = true;
+  document.getElementById("lock").disabled = true;
 
   document.getElementById("step1").classList.remove("active");
   document.getElementById("step2").classList.add("active");
   document.getElementById("step3").classList.add("active");
 
-  const chosen = destinations.filter(destination =>
-    selected.has(destination.id)
-  );
+  const chosen = destinations.filter(d => selected.has(d.id));
 
-  document.getElementById("lockedReport").textContent =
-    "Your predicted destinations: " +
-    chosen.map(destination => destination.name).join(", ") +
-    ". Main factor: " + reasonLabel(reason.value) +
-    ". Supporting evidence: " + evidenceLabel(evidence.value) + ".";
+  document.getElementById("report").textContent =
+    "Predicted destinations: " + chosen.map(d => d.name).join(", ") +
+    ". Main reason: " + reasonNames[reason] +
+    ". Supporting evidence: " + evidenceNames[evidence] + ".";
 
   const comparison = document.getElementById("comparison");
   comparison.replaceChildren();
 
-  chosen.forEach(destination => {
+  chosen.forEach(d => {
     const box = document.createElement("div");
     box.className = "result";
 
-    const heading = document.createElement("h3");
-    heading.textContent = destination.name;
+    const title = document.createElement("h3");
+    title.textContent = d.name;
 
     const outcome = document.createElement("p");
+    outcome.textContent = d.invaded
+      ? "Germany invaded this destination on " + d.date + "."
+      : "Germany did not successfully invade this destination during the campaigns described here.";
 
-    if (destination.invaded) {
-      outcome.className = "good";
-      outcome.textContent =
-        "Germany invaded this destination on " + destination.when + ".";
-    } else {
-      outcome.className = "bad";
-      outcome.textContent =
-        "Germany did not successfully invade this destination. " +
-        "This was a possible prediction, but it did not match the " +
-        "major invasions in this briefing.";
-    }
-
-    box.appendChild(heading);
-    box.appendChild(outcome);
+    box.append(title,outcome);
     comparison.appendChild(box);
   });
 
-  document.getElementById("originalAssessment").textContent = assessment;
-
+  document.getElementById("original").textContent = assessment;
   document.getElementById("step3").classList.remove("active");
   document.getElementById("step4").classList.add("active");
 
-  document.getElementById("revealPanel").classList.remove("hidden");
-  document.getElementById("revealPanel").scrollIntoView({
+  document.getElementById("reveal").classList.remove("hidden");
+  document.getElementById("reveal").scrollIntoView({
     behavior:"smooth",
     block:"start"
   });
 }
 </script>
-
 </body>
 </html>
